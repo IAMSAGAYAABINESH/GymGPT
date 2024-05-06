@@ -1,0 +1,8 @@
+einops
+langchain-groq
+sentence_transformers
+faiss-cpu
+langchain-community
+langchain
+pypdf
+huggingface_hub
