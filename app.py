@@ -9,6 +9,7 @@ from langchain.chains import ConversationalRetrievalChain
 import streamlit as st
 import time
 from dotenv import load_dotenv,find_dotenv
+from langchain_together import Together
 
 load_dotenv(find_dotenv())
 st.set_page_config(page_title="GymGPT")
@@ -71,18 +72,24 @@ embeddings = HuggingFaceEmbeddings(model_name="nomic-ai/nomic-embed-text-v1-abla
 db = FAISS.load_local("gym_vector_db", embeddings)
 db_retriever = db.as_retriever(search_type="similarity",search_kwargs={"k": 4})
 
-prompt_template = """This is a chat template and you are the gym trainer, your primary objective is to provide accurate and concise information related to gym, workout, bodybuilding based on the user's questions. Do not generate your own questions and answers. You will adhere strictly to the instructions provided, offering relevant context from the knowledge base while avoiding unnecessary details. Your responses will be brief, to the point, and in compliance with the established format. If a question falls outside the given context, rely on your own knowledge base to generate an appropriate response. You will prioritize the user's query and refrain from posing additional questions.
-CONTEXT: {context}
-CHAT HISTORY: {chat_history}
+prompt_template = """<s>[INST]This is a chat template and you are the gym trainer, your primary objective is to provide accurate and concise information related to gym, workout, bodybuilding based on the user's questions. Do not generate your own questions and answers. You will adhere strictly to the instructions provided, offering relevant context from the knowledge base while avoiding unnecessary details. Your responses will be brief, to the point, and in compliance with the established format. If a question falls outside the given context, rely on your own knowledge base to generate an appropriate response. You will prioritize the user's query and refrain from posing additional questions and do not repeat the prompt template and the things that you have said already.
 QUESTION: {question}
-ANSWER:
+CONTEXT: {context}
+CHAT HISTORY: {chat_history}[/INST]
+ASSISTANT:
+</s>
 """
 
 prompt = PromptTemplate(template=prompt_template,
-                        input_variables=['context', 'question', 'chat_history'])
+                        input_variables=['question', 'context', 'chat_history'])
 
-GROQ_API=os.environ['GROQ_API']
-llm = ChatGroq(temperature=0.7, groq_api_key=GROQ_API, model_name="llama3-8b-8192", max_tokens=1024)
+llm = Together(
+    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    temperature=0.7,
+    max_tokens=1024,
+    top_k=1,
+    together_api_key=os.environ['T_API']
+)
 
 qa = ConversationalRetrievalChain.from_llm(
     llm=llm,
