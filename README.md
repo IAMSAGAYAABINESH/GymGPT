@@ -6,7 +6,7 @@
 ----------------------------------------------------------------------------------------------------
 # Description :-
 
-Introducing GymGPT, your ultimate fitness companion powered by the cutting-edge Llama3-8b language model. 
+Introducing GymGPT, your ultimate fitness companion powered by the cutting-edge  Mixtral-8x7B language model. 
 Whether you're a seasoned gym-goer or just starting your fitness journey, GymGPT is here to revolutionize your workouts. 
 With its intuitive interface and personalized recommendations, GymGPT helps you craft tailored workout plans and provides expert advice on nutrition and exercise techniques
 
