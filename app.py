@@ -8,10 +8,8 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import ConversationalRetrievalChain
 import streamlit as st
 import time
-from dotenv import load_dotenv,find_dotenv
 from langchain_together import Together
 
-load_dotenv(find_dotenv())
 st.set_page_config(page_title="GymGPT")
 col1, col2, col3 = st.columns([1,2,1])
 with col2:
